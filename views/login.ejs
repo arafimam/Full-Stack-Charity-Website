@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<link rel="stylesheet" href="/userForm.css">
+
+
+<div class="signUp-container">
+    
+    <div class="holder">
+        <h1> Login </h1>
+        <!--Form for register. -->
+        <form action="/login" method="post">
+            <br><br>
+
+            <p>Email Address</p>
+            <input type="email" placeholder="Email Adress" name="username" required class="text">
+
+            <p>password</p>
+            <input type="password" placeholder="password" name="password" class="text" id="passwordText"><br>
+            <input type="checkbox" onclick="viewPassword()">Show Password
+            
+            <br>
+            <p1>New to our website? <a href="/register">Register</a></p1><br><br>
+            <button type="submit" id="btn" class="btn btn-secondary">Login</button><br><br>
+        </form>
+    </div>
+    
+</div>
+
+<script>
+    function viewPassword(){
+        if (passwordText.type === "password"){
+            passwordText.type = "text"
+
+        }else{
+            passwordText.type = "password"
+        }
+    }
+</script>
+
+
+<%- include('partials/footer') %>

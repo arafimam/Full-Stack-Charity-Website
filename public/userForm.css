@@ -1,0 +1,43 @@
+.signUp-container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.text{
+
+    width: 70%;
+    padding: 12px 10px;
+    margin: 0px 0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus,input[type=number]:focus {
+    border: 3px solid #555;
+    width: 80%;
+}
+ 
+.holder{
+    text-align: center;
+    background-color:	#A8A8A8;
+    width: 35%;
+    border-radius: 8px;
+}
+
+p{
+    font-size: 1rem;
+    color: white;
+}
+
+.passwordTexts{
+    display: inline-block;
+    border:1px solid black;
+    border-radius: 8px;
+    text-align: left;
+
+}

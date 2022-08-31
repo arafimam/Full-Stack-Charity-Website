@@ -1,0 +1,144 @@
+<%- include('partials/header') %>
+
+<link rel="stylesheet" href="/userForm.css">
+
+
+<div class="signUp-container">
+    
+    <div class="holder">
+        <h1> Register </h1>
+        <!--Form for register. -->
+        <form action="/register" method="post">
+            <br><br>
+
+            <p>Email Address</p>
+            <input type="email" placeholder="Email Adress" name="username" required class="text">
+
+            <p>Contact Number</p>
+            <input type = "number" placeholder="(+1) xyz" name="phone" required class="text" id="phone"><br>
+
+            <div class="passwordTexts">
+                <p1 style="color: red;" id="phoneSMS"> ❌ Phone number must contain 10 digits only (do not include country code)</p1><br>
+            </div>
+            
+            <p>password</p>
+            <input type="password" placeholder="password" name="password" class="text" id="passwordText"><br>
+            <input type="checkbox" onclick="viewPassword()">Show Password
+
+            <br>
+            <div class="passwordTexts">
+                <p1 style="color: red;" id="lowercase"> ❌ Your password should contain lower case letter</p1><br>
+                <p1 style="color: red;" id="uppercase"> ❌ Your password should contain uppper case letter</p1><br>
+                <p1 style="color: red;" id = "totalLength"> ❌ Your password should contain a total of atleast 6 characters</p1><br>
+                <p1 style="color: red;" id="number"> ❌ Your password should contain numbers</p1><br>
+            </div>
+            
+            <br>
+            <p1>Already Registered? <a href="/login">Login</a></p1><br><br>
+            <button type="submit" id="btn" class="btn btn-secondary" disabled="true">Register</button><br><br>
+        </form>
+    </div>
+    
+</div>
+
+<script>
+
+    // grab all html elements here.
+    var passwordText = document.getElementById('passwordText');
+    var display1 = document.getElementById("lowercase");
+    var display2 = document.getElementById("uppercase");
+    var display3 = document.getElementById("totalLength");
+    var display4 = document.getElementById("number");
+    var phone = document.getElementById("phone");
+    let checker = false;
+    let phoneChecker = false;
+
+    // event listen to check password
+    // Criteria for password that is check:
+    /**
+     * Password length has to be greater than equal to 6
+     * Password has to contain uppercase letter
+     * Password has to contain lowercase letter
+     * Password has to contain number
+     * */
+    // Criteria for phone number:
+    /**
+     * Phone number length has to be greater than 10. 
+     * */
+    // Button is only enabled when both phone number and password criteria is matched.
+
+    phone.addEventListener("keyup",function(){
+        if (phone.value.length == 10){
+            phoneChecker = true;
+            document.getElementById("phoneSMS").style.color = "#00FF00"
+            document.getElementById("phoneSMS").innerHTML = "✅"
+            
+        }else{
+            phoneChecker = false;
+            document.getElementById("phoneSMS").style.color = "#ff0000"
+            document.getElementById("phoneSMS").innerHTML = "❌ Phone number must contain 10 digits only (do not include country code)"
+        }
+        if (checker && phoneChecker){
+            document.getElementById("btn").disabled = false;
+        }
+    })
+
+    passwordText.addEventListener("keyup",function(){
+        checkPassword(passwordText.value);
+        if (checker && phoneChecker){
+            document.getElementById("btn").disabled = false;
+        }
+    })
+
+    function checkPassword(password){
+        if (password.match(/[a-z]+/)) {
+            display1.style.color = "#00FF00"
+            display1.innerHTML = "✅ lower case letter added!"
+            checker = true;
+        }else{
+            checker = false;
+            display1.style.color = "#ff0000"
+            display1.innerHTML = "❌ Your password should contain lower case letter"
+        }
+        if (password.match(/[A-Z]+/)) {
+            display2.style.color = "#00FF00"
+            display2.innerHTML = "✅ Upper case letter added!"
+            checker = true;
+        }else{
+            checker = false;
+            display2.style.color = "#ff0000"
+            display2.innerHTML = "❌ Your password should contain uppper case letter"
+        }
+        if (password.match(/[0-9]+/)) {
+            display4.style.color = "#00FF00"
+            display4.innerHTML = "✅ number added!"
+            checker = true;
+        }else{
+            checker = false;
+            display4.style.color = "#ff0000"
+            display4.innerHTML = "❌ Your password should contain numbers"
+        }
+        if (password.length >= 6){
+            display3.style.color = "#00FF00";
+            display3.innerHTML = "✅ correct length"
+            checker = true;
+        }else{
+            checker = false;
+            display3.style.color = "#ff0000"
+            display3.innerHTML = "❌ Your password should contain a total of atleast 6 characters"
+        }
+    }
+
+    function viewPassword(){
+        if (passwordText.type === "password"){
+            passwordText.type = "text"
+
+        }
+        else if (passwordText.type === "text"){
+            passwordText.type = "password";
+        }
+    }
+</script>
+
+<%- include('partials/footer') %>
+
