@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/post.css">
+
+
+<h1 style="background-color: aliceblue; text-align: center;">Add things for charity here</h1>
+
+<form method="post" action="/addPost" enctype="multipart/form-data">
+    <div class="postInformation">
+        <div class="row">
+            <div class="col">
+                <input type="text" name="title" placeholder="Title" class="text">
+            </div>
+            <div class="col radioButtons">
+                <input type="text" name="Locations" placeholder="Location" class="text">
+            </div>
+        </div>
+    
+        <br><br><br>
+        <div class="row">
+            <div class="col">
+                <h1>Add image system here.</h1>
+                <input type="file" name="file" id="file">
+            </div>
+            <div class="col radioButtons">
+                <h1>Type:</h1>
+                <input type="radio" id="Electronic equipment" name="fav" value="Electronic equipment">
+                <label for="html">Electronic equipment</label><br>
+    
+                <input type="radio" id="Clothes" name="fav" value="Clothes">
+                <label for="css">Clothes</label><br>
+    
+                <input type="radio" id="food" name="fav" value="Food">
+                <label for= "food">Food</label><br>
+    
+                <input type="radio" id="furniture" name="fav" value="Furniture">
+                <label for="furniture">Furniture</label><br>
+    
+                <input type="radio" id="other" name="fav" value="other">
+                <label for="other">Other</label>
+            </div>
+        </div>
+
+        <button type="submit" id="btn" class="btn btn-secondary">Post</button><br><br>
+    </div>
+
+    
+
+
+
+
+</form>
+
+
+<%- include('partials/footer') %>
