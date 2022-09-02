@@ -1,5 +1,4 @@
-// idea taken from : https://stackoverflow.com/questions/53548990/how-do-i-add-new-field-other-than-multer-gridfs-storage-default-properties
-// of not storing business idea in metadata of uploads.files.
+
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose")
 
@@ -12,6 +11,7 @@ const postSchema = new mongoose.Schema({
     Title: String,
     Location: String,
     Type: String,
+    photoName: String
 });
 
 //_id of post will contain the file id.

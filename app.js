@@ -10,54 +10,26 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require("passport-local-mongoose");
-const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
-const methodOverride = require('method-override');
+const multer  = require('multer')
 
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
 app.use(express.static("public"));
 app.set('view engine','ejs');
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/images/')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix)
+}
+})
 
-//MiddleWare
-const mongoURI = 'mongodb://localhost:27017/user';
+const upload = multer({ storage: storage })
 
-// Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
-
-// Init gfs
-let gfs;
-
-conn.once('open', () => {
-  // Init stream
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads'); //collection name in database.
-});
-
-// Create storage engine
-const storage = new GridFsStorage({
-  url: mongoURI,
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-        const filename = buf.toString('hex') + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'uploads'
-        };
-        resolve(fileInfo);
-      });
-    });
-  }
-});
-const upload = multer({ storage });
 
 
 app.use(session({
@@ -132,6 +104,37 @@ app.get("/test",function(req,res){
     }
 })
 
+app.get("/viewPost",async function(req,res){
+
+    if (req.isAuthenticated()){
+        //go over all the post stored in the db.
+    const cursor = Post.find().cursor();
+    var displayValues = [{
+        username: String,
+        phone: String,
+        title: String,
+        location: String,
+        type: String,
+        imageName: String
+    }]
+
+    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+        // Use `doc`
+        
+        if (req.user.username != doc.username){
+            displayValues.push(doc);
+        }
+        
+    }
+    
+    res.render("viewPost",{data:displayValues});
+
+    }else{
+        res.redirect("/login")
+    }
+    
+})
+
 //############################################################### < POST Requests > ###########################################################
 
 /**
@@ -188,20 +191,21 @@ app.post("/login",function(req,res){
  */
 
 app.post("/addPost",upload.single('file'),function(req,res){
-    console.log(req.file.id);
-    console.log(req.body);
+    
+
+    // TODO: handle file type input here. 
     const post = new Post({
        username: req.user.username,
        phone: req.user.phone,
        Title: req.body.title,
-       Location: req.body.locations,
+       Location: req.body.Locations,
        Type: req.body.fav,
+       photoName: req.file.filename
     });
-    post._id = req.file.id;
-    console.log(post);
+    
     post.save();
     //res.json({ file: req.file });
-    //res.redirect("/addPost");
+    res.redirect("/viewPost");
 })
 
 

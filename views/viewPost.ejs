@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/info.css">
+
+<h1 style="text-align: center;">Things up for donation: </h1>
+    <% for (var i=1;i<data.length;i++){ %>
+
+        <div class="info">
+
+            <hr/>
+        <div class="row">
+            
+            <div class="col left">
+                <div class="contact">
+                    <h1 style="display: inline-block;">Contact information</h1><br>
+                    <p style="display: inline-block;" >🧑Email:  <%= data[i].username %></p><br>
+                    <p style="display: inline-block;">📞Contact Number: <%= data[i].phone %></p><br>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col left">
+                <h3>Information: </h3>
+                <p><%= data[i].Title %></p>
+                <h3>Location: </h3>
+                <p><%= data[i].Location %></p>
+            </div>
+            <div class="col right">
+                <img src="images/<%= data[i].photoName %>"/>
+            </div>
+        </div>
+        
+        <hr/>
+        </div>
+        <br><br><br>
+        
+    <% } %>
+
+
+<%- include('partials/footer') %>
