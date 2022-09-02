@@ -17,6 +17,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set('view engine','ejs');
+var checkPage =  false; // checks which page user is trying to enter
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -68,7 +69,12 @@ app.get("/",function(request,respond){
  * respond sends the login file.
  */
 app.get("/login",function(request,respond){
-    respond.render("login");
+    if (request.isAuthenticated()){
+        respond.redirect("/addPost")
+    }else{
+        respond.render("login")
+    }
+    
 })
 
 /**
@@ -77,7 +83,11 @@ app.get("/login",function(request,respond){
  * respond sends the register file.
  */
 app.get("/register",function(request,respond){
-    respond.render("register");
+    if (request.isAuthenticated()){
+        respond.redirect("/addPost")
+    }else{
+        respond.render("register")
+    }
 })
 
 
@@ -104,18 +114,17 @@ app.get("/test",function(req,res){
     }
 })
 
-app.get("/viewPost",async function(req,res){
 
+/**
+ * Get request for view post
+ * iterates through the post db and gives all data other than the user that is currently logged in.
+ */
+app.get("/viewPost",async function(req,res){
     if (req.isAuthenticated()){
         //go over all the post stored in the db.
     const cursor = Post.find().cursor();
     var displayValues = [{
-        username: String,
-        phone: String,
-        title: String,
-        location: String,
-        type: String,
-        imageName: String
+        
     }]
 
     for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
@@ -126,14 +135,75 @@ app.get("/viewPost",async function(req,res){
         }
         
     }
-    
-    res.render("viewPost",{data:displayValues});
+    checkPage = true;
+    res.render("viewPost",{data:displayValues,showButtons: checkPage});
+    }else{
+        res.redirect("/login")
+    } 
+})
+
+
+/**
+ * Get request for myPost
+ * iterates through the post db and gives all postings made by the current user
+ */
+app.get("/myPost",async function(req,res){
+    if (req.isAuthenticated()){
+
+        const cursor = Post.find().cursor();
+    var displayValues = [{
+        
+    }]
+
+    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+        // Use `doc`
+        if (req.user.username === doc.username){
+            displayValues.push(doc);
+        }   
+    }
+    checkPage = false;
+    res.render("viewPost",{data:displayValues,showButtons: checkPage});
+
+    }
+})
+
+
+/**
+ * Get request for viewAllPost
+ * Sends all information from postingDb
+ */
+app.get("/viewAllPost",async function(req,res){
+
+    if (req.isAuthenticated()){
+
+    const cursor = Post.find().cursor();
+    var displayValues = [{
+        
+    }]
+
+    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+        // Use `doc`
+        displayValues.push(doc);  
+    }
+    //console.log(displayValues);
+    checkPage = false;
+    res.render("viewPost",{data:displayValues,showButtons: checkPage});
 
     }else{
         res.redirect("/login")
     }
-    
+
 })
+
+/**
+ * Logs out user
+ */
+app.get('/logout', function(req, res, next){
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
+  });
 
 //############################################################### < POST Requests > ###########################################################
 
@@ -200,12 +270,36 @@ app.post("/addPost",upload.single('file'),function(req,res){
        Title: req.body.title,
        Location: req.body.Locations,
        Type: req.body.fav,
-       photoName: req.file.filename
+       photoName: req.file.filename,
+       likes: 0,
+       dislikes: 0
     });
     
     post.save();
     //res.json({ file: req.file });
     res.redirect("/viewPost");
+})
+
+
+/**
+ * Post request from viewPost
+ * Like and dislike functionality implemented here.
+ */
+app.post("/viewPost",function(req,res){
+    // find the post using the id
+    
+    if (req.body.action === "like"){
+        Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : 1}}).exec()
+        
+    }else if(req.body.action === "dislike"){
+        Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'dislikes' : 1}}).exec()
+    }
+    res.redirect("/viewPost");
+    
+
+
+
+
 })
 
 

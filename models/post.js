@@ -11,10 +11,12 @@ const postSchema = new mongoose.Schema({
     Title: String,
     Location: String,
     Type: String,
-    photoName: String
+    photoName: String,
+    likes: Number,
+    dislikes: Number
 });
 
-//_id of post will contain the file id.
+
 postSchema.plugin(passportLocalMongoose);
 
 const Post = mongoose.model('postSchema',postSchema);
