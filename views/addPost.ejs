@@ -1,28 +1,53 @@
 <%- include('partials/header') %>
-<link rel="stylesheet" href="/post.css">
-<a href="/viewPost">View other Post</a><br>
-<a href="/myPost">View your postings</a><br>
-<a href="/viewAllPost">View all Postings</a><br>
-<a href="/logout">Logout</a>
 
-<h1 style="background-color: aliceblue; text-align: center;">Add things for charity here</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/viewPost">Other Posts<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/viewAllPost">All post</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/myPost">Your posts</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        
+      </ul>
+    </div>
+  </nav>
+
+
+
+<link rel="stylesheet" href="/post.css">
+
+
+<h1 style="background-color: aliceblue; text-align: center;">Add things for donation here</h1>
 
 <form method="post" action="/addPost" enctype="multipart/form-data">
     <div class="postInformation">
         <div class="row">
             <div class="col">
-                <input type="text" name="title" placeholder="Title" class="text">
+                <input type="text" name="title" placeholder="Title" class="text" required>
             </div>
             <div class="col radioButtons">
-                <input type="text" name="Locations" placeholder="Location" class="text">
+                <input type="text" name="Locations" placeholder="Location" class="text" required>
             </div>
         </div>
     
         <br><br><br>
         <div class="row">
             <div class="col">
-                <h1>Add image system here.</h1>
-                <input type="file" name="file" id="file">
+                <h1>Add one image of your product</h1>
+                <input type="file" name="file" id="file" required>
             </div>
             <div class="col radioButtons">
                 <h1>Type:</h1>

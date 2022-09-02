@@ -296,10 +296,6 @@ app.post("/viewPost",function(req,res){
     }
     res.redirect("/viewPost");
     
-
-
-
-
 })
 
 
