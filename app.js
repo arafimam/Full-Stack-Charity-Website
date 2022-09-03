@@ -363,10 +363,16 @@ app.post("/viewPost",function(req,res){
                 console.log(err);
             }else{
                 var values = []
+                var userInteresed = [];
                 //console.log(success.interestedPost);
                 values.push(success.notInterestPost);
+                userInteresed.push(success.interestedPost);
                 if (!values[0].includes(req.body.id)){
                     Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'dislikes' : 1}}).exec()
+                }
+                // if user liked the post and now he disliked it decrement like count by 1.
+                if (userInteresed[0].includes(req.body.id)){
+                    Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : -1}}).exec()
                 }
 
             }
