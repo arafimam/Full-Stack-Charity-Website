@@ -195,6 +195,39 @@ app.get("/viewAllPost",async function(req,res){
 
 })
 
+app.get("/viewInterestedPost",async function(req,res){
+    if (req.isAuthenticated()){
+        //get interest posts id from req.user.username
+        const user =  User.findOne({username: req.user.username},async function(err,doc){
+            if (err){
+                console.log("There was a error");
+            }else{
+                var values = [];
+                values.push(doc.interestedPost);
+                //display the ids in viewPost
+                const cursor = Post.find().cursor();
+                var displayValues = [{
+        
+                }]
+
+                for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+                // Use `doc`
+                console.log(doc._id.toString());
+                console.log(values[0].includes(doc._id.toString()))
+                    if (values[0].includes(doc._id)){
+                        displayValues.push(doc);
+                    }  
+                }
+                checkPage = false;
+                res.render("viewPost",{data:displayValues,showButtons: checkPage});
+            }
+        })
+        
+    }else{
+        res.redirect("/login");
+    }
+})
+
 /**
  * Logs out user
  */
@@ -288,10 +321,22 @@ app.post("/addPost",upload.single('file'),function(req,res){
 app.post("/viewPost",function(req,res){
     // find the post using the id
     
+    console.log(req.user.username);
     if (req.body.action === "like"){
+        
+        User.findOneAndUpdate({username: req.user.username},{ '$push': { interestedPost: req.body.id } },function(err,success){
+            if (err){
+                console.log(err);
+            }
+        })
         Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : 1}}).exec()
         
     }else if(req.body.action === "dislike"){
+        User.findOneAndUpdate({username: req.user.username},{ '$push': { notInterestPost: req.body.id } },function(err,success){
+            if (err){
+                console.log(err);
+            }
+        })
         Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'dislikes' : 1}}).exec()
     }
     res.redirect("/viewPost");
