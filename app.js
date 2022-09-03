@@ -330,7 +330,7 @@ app.post("/addPost",upload.single('file'),function(req,res){
     
     post.save();
     //res.json({ file: req.file });
-    res.redirect("/viewPost");
+    res.redirect("/addPost");
 })
 
 
@@ -341,23 +341,37 @@ app.post("/addPost",upload.single('file'),function(req,res){
 app.post("/viewPost",function(req,res){
     // find the post using the id
     
-    console.log(req.user.username);
     if (req.body.action === "like"){
         
         User.findOneAndUpdate({username: req.user.username},{ '$push': { interestedPost: req.body.id } },function(err,success){
             if (err){
                 console.log(err);
+            }else{
+                var values = []
+                //console.log(success.interestedPost);
+                values.push(success.interestedPost);
+                if (!values[0].includes(req.body.id)){
+                    Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : 1}}).exec()
+                }
             }
         })
-        Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : 1}}).exec()
+        
         
     }else if(req.body.action === "dislike"){
         User.findOneAndUpdate({username: req.user.username},{ '$push': { notInterestPost: req.body.id } },function(err,success){
             if (err){
                 console.log(err);
+            }else{
+                var values = []
+                //console.log(success.interestedPost);
+                values.push(success.notInterestPost);
+                if (!values[0].includes(req.body.id)){
+                    Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'dislikes' : 1}}).exec()
+                }
+
             }
         })
-        Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'dislikes' : 1}}).exec()
+        
     }
     res.redirect("/viewPost");
     
