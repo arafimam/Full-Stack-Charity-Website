@@ -117,7 +117,7 @@ app.get("/test",function(req,res){
 
 /**
  * Get request for view post
- * iterates through the post db and gives all data other than the user that is currently logged in.
+ * iterates through the post db and gives all data other than the user that is currently logged in and elimates post that user has mentioned as not interested
  */
 app.get("/viewPost",async function(req,res){
     if (req.isAuthenticated()){
@@ -127,16 +127,32 @@ app.get("/viewPost",async function(req,res){
         
     }]
 
-    for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-        // Use `doc`
-        
-        if (req.user.username != doc.username){
-            displayValues.push(doc);
+    // get current user from user db.
+    var values = [];
+    const user =  User.findOne({username: req.user.username},async function(err,result){
+        if (err){
+            console.log("error")
+        }else{
+            
+            values.push(result.notInterestPost);
+            
+            for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+                // Use `doc`
+                // we need to remove not interest post from here.
+                
+                if (req.user.username != doc.username && !values[0].includes(doc._id)){
+                    displayValues.push(doc);
+                }
+                
+            }
+            checkPage = true;
+            res.render("viewPost",{data:displayValues,showButtons: checkPage});
         }
-        
-    }
-    checkPage = true;
-    res.render("viewPost",{data:displayValues,showButtons: checkPage});
+    })
+    //console.log(values);
+
+
+    
     }else{
         res.redirect("/login")
     } 
