@@ -3,6 +3,17 @@
 <link rel="stylesheet" href="/info.css">
 
 <h1 style="text-align: center;">Things up for donation: </h1>
+<% if (data.length <=1 ){ %>
+    <div class="info">
+        <h1>Add Post or wait for other users to post. Currently empty...</h1>
+    </div>
+
+
+<% } %>
+
+
+
+
     <% for (var i=1;i<data.length;i++){ %>
 
         <div class="info">
@@ -47,6 +58,7 @@
         <br><br><br>
         
     <% } %>
+
 
 
 <%- include('partials/footer') %>
