@@ -195,6 +195,11 @@ app.get("/viewAllPost",async function(req,res){
 
 })
 
+/**
+ * Get requst for viewInterestedPost
+ * checks which post current user have as interested
+ * and displays them
+ */
 app.get("/viewInterestedPost",async function(req,res){
     if (req.isAuthenticated()){
         //get interest posts id from req.user.username
@@ -212,8 +217,7 @@ app.get("/viewInterestedPost",async function(req,res){
 
                 for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
                 // Use `doc`
-                console.log(doc._id.toString());
-                console.log(values[0].includes(doc._id.toString()))
+                
                     if (values[0].includes(doc._id)){
                         displayValues.push(doc);
                     }  
