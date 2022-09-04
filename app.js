@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set('view engine','ejs');
 var checkPage =  false; // checks which page user is trying to enter
+var yourPostRoute = false;
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -146,7 +147,8 @@ app.get("/viewPost",async function(req,res){
                 
             }
             checkPage = true;
-            res.render("viewPost",{data:displayValues,showButtons: checkPage});
+            yourPostRoute = false;
+            res.render("viewPost",{data:displayValues,showButtons: checkPage,showDelete: yourPostRoute});
         }
     })
     //console.log(values);
@@ -178,8 +180,11 @@ app.get("/myPost",async function(req,res){
         }   
     }
     checkPage = false;
-    res.render("viewPost",{data:displayValues,showButtons: checkPage});
+    yourPostRoute = true;
+    res.render("viewPost",{data:displayValues,showButtons: checkPage,showDelete: yourPostRoute});
 
+    }else{
+        res.redirect("/login");
     }
 })
 
@@ -203,7 +208,8 @@ app.get("/viewAllPost",async function(req,res){
     }
     //console.log(displayValues);
     checkPage = false;
-    res.render("viewPost",{data:displayValues,showButtons: checkPage});
+    yourPostRoute = false;
+    res.render("viewPost",{data:displayValues,showButtons: checkPage,showDelete: yourPostRoute});
 
     }else{
         res.redirect("/login")
@@ -233,13 +239,13 @@ app.get("/viewInterestedPost",async function(req,res){
 
                 for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
                 // Use `doc`
-                
                     if (values[0].includes(doc._id)){
                         displayValues.push(doc);
                     }  
                 }
                 checkPage = false;
-                res.render("viewPost",{data:displayValues,showButtons: checkPage});
+                yourPostRoute = false;
+                res.render("viewPost",{data:displayValues,showButtons: checkPage,showDelete: yourPostRoute});
             }
         })
         
@@ -381,6 +387,23 @@ app.post("/viewPost",function(req,res){
     }
     res.redirect("/viewPost");
     
+})
+
+
+
+app.post("/myPost",function(req,res){
+    console.log(req.body);
+    if (req.body.action === "delete"){
+        Post.findOneAndDelete({_id: req.body.id},function(err,result){
+            if (err){
+                console.log("Could not delete.")
+            }
+            else{
+                res.redirect("/myPost");
+            }
+        })
+    }
+    res.redirect("/myPost");
 })
 
 

@@ -50,6 +50,16 @@
         <button class="btn btn-dark" type="submit" name= "action" value="dislike">👎 Not Interested (<%= data[i].dislikes %>)</button>
             
         <% } %>
+
+        <% if (showDelete){ %>
+            <div class="info-1">
+                <p>Object donated?</p>
+                <p>Want to remove the post?</p>
+                <button class="btn btn-dark" type="submit" name="action" value="delete">🗑️ Remove Post </button> 
+            </div>
+            
+                  
+        <% } %>
         
         
     </form>

@@ -1,5 +1,44 @@
-<a href="/login"> Login</a>
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/home.css">
 
-<br><br>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Donator</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        
+        <li class="nav-item active">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/myPost"> Sign-Up</a>
+        </li>     
+      </ul>
+    </div>
+  </nav>
 
-<a href="/register">Register</a>
+  <div class="heading">
+    <h1>Tired of waiting for bins outside for donation?</h1>
+    <h2>Post here and make your life easier</h2>
+  </div>
+  <br><br><br>
+  <div class="heading">
+    <h1> As simple as:</h1>
+    <span class="element"></span>
+  </div>
+  
+
+
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+  <script>
+    var options = {
+        strings: ['Add a post', 'Look at other posts','Be interested and get connected'],
+        typeSpeed: 40
+    };
+
+var typed = new Typed('.element', options);
+  </script>
+  <%- include('partials/footer') %>

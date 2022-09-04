@@ -1,0 +1,19 @@
+.heading{
+    margin: auto;
+    width: 60%;
+    text-align: center;
+    padding-top: 3px;
+    border: 3px solid #73AD21;
+    border-radius: 8px;
+    
+    
+}
+
+body{
+    background-color: bisque;
+}
+
+.element{
+    font-size: 1.5rem;
+    color: #73AD21;
+}
