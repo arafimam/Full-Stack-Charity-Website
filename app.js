@@ -394,19 +394,34 @@ app.post("/viewPost",function(req,res){
             if (err){
                 console.log("Error finding the post in post database.");
             }else{
-                var displayedValues = [];
-                displayedValues.push(result.Comments);
-                //console.log(displayedValues);
-                for (var i=0;i<result.Comments.length;i++){
-                    console.log(result.Comments[i].person);
-                }
-                res.render("comments",{data:result.Comments });
+                
+                res.render("comments",{data:result.Comments,id: req.body.id});
             }
+
         })
         
     }
     
     
+})
+
+app.post("/comments",function(req,res){
+    //name="id"
+    //name = "addedComment"
+    const username = req.user.username;
+    
+    //User.findOneAndUpdate({username: req.user.username},{ '$push': { notInterestPost: req.body.id } },function(err,success){
+    Post.findOneAndUpdate({id: req.body.id},{'$push' : {Comments: {person: username,description: req.body.addedComment}}},function(err,result){
+        if (err){
+            console.log("Could not add to DB");
+        }
+    });
+    Post.findOne({id: req.body.id},function(err,result){
+        if (err){
+            console.log(err);
+        }
+        res.render("comments",{data: result.Comments,id: req.body.id});
+    })
 })
 
 
