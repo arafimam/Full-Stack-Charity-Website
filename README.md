@@ -14,7 +14,7 @@ Backend languages and pakcages: Javascript, nodejs, express, passport, mongoose 
 # To Run Locally <br>
 1) Open Terminal <br>
 2) git clone https://github.com/arafimam/Full-Stack-Charity-Website.git <br>
-3) npm install <all required packages from packaga.json> <br>
+3) npm install all required packages from packaga.json <br>
 4) nodemon app.js <br>
 5) Open browser and search "localhost:3000" <br>
 
