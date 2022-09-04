@@ -13,7 +13,11 @@ const postSchema = new mongoose.Schema({
     Type: String,
     photoName: String,
     likes: Number,
-    dislikes: Number
+    dislikes: Number,
+    Comments: [{
+        person: String, // storing the person who commented
+        description: String // storing what the comment is
+    }]
 });
 
 

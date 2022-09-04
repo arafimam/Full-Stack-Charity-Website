@@ -254,6 +254,9 @@ app.get("/viewInterestedPost",async function(req,res){
     }
 })
 
+
+
+
 /**
  * Logs out user
  */
@@ -359,6 +362,7 @@ app.post("/viewPost",function(req,res){
                 if (!values[0].includes(req.body.id)){
                     Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : 1}}).exec()
                 }
+                res.redirect("/viewPost");
             }
         })
         
@@ -380,12 +384,28 @@ app.post("/viewPost",function(req,res){
                 if (userInteresed[0].includes(req.body.id)){
                     Post.findOneAndUpdate({_id :req.body.id}, {$inc : {'likes' : -1}}).exec()
                 }
+                res.redirect("/viewPost");
 
             }
         })
         
+    }else if ( req.body.action === "comment"){
+        Post.findOne({id: req.body.id},function(err,result){
+            if (err){
+                console.log("Error finding the post in post database.");
+            }else{
+                var displayedValues = [];
+                displayedValues.push(result.Comments);
+                //console.log(displayedValues);
+                for (var i=0;i<result.Comments.length;i++){
+                    console.log(result.Comments[i].person);
+                }
+                res.render("comments",{data:result.Comments });
+            }
+        })
+        
     }
-    res.redirect("/viewPost");
+    
     
 })
 
