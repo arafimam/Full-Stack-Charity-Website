@@ -25,4 +25,8 @@ Source code for heroku production build is maintained locally
 
  # Upcoming feature:
  1) Profile dashboard for user
-
+ 2) Edit/ delete comments on Post
+ 3) View other users post
+ 4) Edit/ delete profile
+ 5) Edit/ delete post
+ 6) Unit and Integration testing
