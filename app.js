@@ -167,8 +167,8 @@ app.get("/viewPost",async function(req,res){
  */
 app.get("/myPost",async function(req,res){
     if (req.isAuthenticated()){
-
-        const cursor = Post.find().cursor();
+    
+    const cursor = Post.find().cursor();
     var displayValues = [{
         
     }]
@@ -414,20 +414,17 @@ app.post("/comments",function(req,res){
     Post.findOneAndUpdate({id: req.body.id},{'$push' : {Comments: {person: username,description: req.body.addedComment}}},function(err,result){
         if (err){
             console.log("Could not add to DB");
+        }else{
+            res.redirect("/viewPost")
         }
     });
-    Post.findOne({id: req.body.id},function(err,result){
-        if (err){
-            console.log(err);
-        }
-        res.render("comments",{data: result.Comments,id: req.body.id});
-    })
+    
 })
 
 
 
 app.post("/myPost",function(req,res){
-    console.log(req.body);
+    
     if (req.body.action === "delete"){
         Post.findOneAndDelete({_id: req.body.id},function(err,result){
             if (err){
@@ -438,7 +435,20 @@ app.post("/myPost",function(req,res){
             }
         })
     }
-    res.redirect("/myPost");
+    else if (req.body.action === 'comment'){
+        Post.findOne({id: req.body.id},function(err,result){
+            if (err){
+                console.log("Error finding the post in post database.");
+            }else{
+                
+                res.render("comments",{data:result.Comments,id: req.body.id});
+            }
+
+        })
+    }else{
+        res.redirect("/myPost");
+    }
+    
 })
 
 

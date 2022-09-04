@@ -1,15 +1,24 @@
 <%- include('partials/navBar') %>
+<link rel="stylesheet" href="/comments.css">
+<div class="container">
+
+
 <h1>Comments: </h1>
 <% for (var i=0;i<data.length;i++){ %>
-    <h2><%=  data[i].person %> </h2>
-    <p><%=  data[i].description %> </p>
+    <div class="comment">
+        <h2 style="display: inline-block;"><%=  data[i].person %> </h2><br>
+        <p style="display: inline-block;"><%=  data[i].description %> </p>
+    </div>
+    <br><br>
+    
 <% } %>
-
 <form action= "/comments" method = "post">
     <input type="hidden" name="id" value="<%= id %>"/>
     <input type="text" name = "addedComment" placeholder="Add a comment here"/>
-    <button type="submit">Add</button>
-
+    <button type="submit" class="btn btn-success">Add</button>
 </form>
+</div>
+
+
 
 

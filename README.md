@@ -24,7 +24,5 @@ Source code for heroku production build is maintained locally
 <br> 
 
  # Upcoming feature:
- 1) Chat system for different users to connect
- 2) Comment on a particular donation post
-
+ 1) Profile dashboard for user
 
