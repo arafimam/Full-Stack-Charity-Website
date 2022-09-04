@@ -10,3 +10,9 @@ Front end languages: HTML, CSS, Bootstrap and EJS
 
 
 Backend languages and pakcages: Javascript, nodejs, express, passport, mongoose and multer
+
+To run locally: 
+
+
+1) Open Terminal <br>
+2) 
