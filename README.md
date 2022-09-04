@@ -20,6 +20,7 @@ Backend languages and pakcages: Javascript, nodejs, express, passport, mongoose 
 
 # Donation website  <br> 
 https://arafimam-charity-app.herokuapp.com/
+Source code for heroku production build is maintained locally
 <br> 
 
  # Upcoming feature:
